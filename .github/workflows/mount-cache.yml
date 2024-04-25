@@ -17,8 +17,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            /var/docker-cache/go-build
-            /var/docker-cache/go-mod
+            ~/.go-docker-cache/go-build
+            ~/.go-docker-cache/go-mod
           key: go-docker-build-cache-${{ hashFiles('**/*.sum') }}
 
       - name: inject mount cache into docker
@@ -26,8 +26,8 @@ jobs:
         with:
           cache-map: |
             {
-              "/var/docker-cache/go-build": "/root/.cache/go-build",
-              "/var/docker-cache/go-mod": "/go/pkg/mod"
+              "~/.go-docker-cache/go-build": "/root/.cache/go-build",
+              "~/.go-docker-cache/go-mod": "/go/pkg/mod"
             }
           # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
