@@ -1,0 +1,42 @@
+name: Mount cache
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create cache directories
+        run: |
+          mkdir -p ~/.go-docker-cache/go-build
+          mkdir -p ~/.go-docker-cache/go-mod
+
+      - name: Go Build Cache for Docker
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.go-docker-cache/go-build
+            ~/.go-docker-cache/go-mod
+          key: go-docker-build-cache-${{ hashFiles('**/*.sum') }}
+
+      - name: inject mount cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@v3.1.0
+        with:
+          cache-map: |
+            {
+              "~/.go-docker-cache/go-build": "/root/.cache/go-build",
+              "~/.go-docker-cache/go-mod": "/go/pkg/mod"
+            }
+          # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
+
+      - name: build
+        run: docker buildx build . -f ms/hello/Dockerfile.cache -t gha-go-monorepo-hello --load
+
+
