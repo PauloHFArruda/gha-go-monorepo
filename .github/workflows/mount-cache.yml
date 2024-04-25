@@ -34,3 +34,8 @@ jobs:
       - name: build
         run: docker buildx build . -f ms/hello/Dockerfile.cache -t gha-go-monorepo-hello --load
 
+      - name: remove cached dirs
+        run: |
+          rm -rf go-mod-cache
+          rm -rf go-build-cache
+
