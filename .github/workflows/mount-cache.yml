@@ -17,25 +17,25 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            go-build-cache
-            go-mod-cache
+            ~/.cache/go-build
+            ~/.cache/go-mod
           key: go-docker-build-cache-${{ hashFiles('**/*.sum') }}
 
-      - name: inject go-build-cache into docker
+      - name: inject ~/.cache/go-build into docker
         uses: reproducible-containers/buildkit-cache-dance@v3.1.0
         with:
           cache-map: |
             {
-              "go-build-cache": "/root/.cache/go-build",
-              "go-mod-cache": "/go/pkg/mod"
+              "~/.cache/go-build": "/root/.cache/go-build",
+              "~/.cache/go-mod": "/go/pkg/mod"
             }
           # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
       - name: build
         run: docker buildx build . -f ms/hello/Dockerfile.cache -t gha-go-monorepo-hello --load
 
-      - name: remove cached dirs
-        run: |
-          rm -rf go-mod-cache
-          rm -rf go-build-cache
+      # - name: remove cached dirs
+      #   run: |
+      #     rm -rf ~/.cache/go-mod
+      #     rm -rf ~/.cache/go-build
 
