@@ -16,7 +16,9 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: go-build-cache
+          path: |
+            go-build-cache
+            go-mod-cache
           key: go-docker-build-cache-${{ hashFiles('**/*.sum') }}
 
       - name: inject go-build-cache into docker
@@ -24,9 +26,10 @@ jobs:
         with:
           cache-map: |
             {
-              "go-build-cache": "/go/pkg/mod"
+              "go-build-cache": "/root/.cache/go-build"
+              "go-mod-cache": "/root/.cache/go-mod"
             }
-          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
+          # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
       - name: build
         run: docker buildx build . -f ms/hello/Dockerfile.cache -t gha-go-monorepo-hello --load
