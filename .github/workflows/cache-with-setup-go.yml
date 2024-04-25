@@ -20,8 +20,8 @@ jobs:
       - name: Get Cache Directories
         id: cache-dirs
         run: |
-          echo "gomodcache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
-          echo "gocache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
+          echo "gomodcache=$(go env GOMODCACHE)" >> "$GITHUB_OUTPUT"
+          echo "gocache=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
 
       - name: Update Cache
         run: |
