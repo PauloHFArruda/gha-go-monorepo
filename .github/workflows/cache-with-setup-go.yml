@@ -41,8 +41,8 @@ jobs:
         with:
           cache-map: |
             {
-              "${{steps.cache-dirs.gocache}}": "/root/.cache/go-build",
-              "${{steps.cache-dirs.gomodcache}}": "/go/pkg/mod"
+              "${{steps.cache-dirs.outputs.gocache}}": "/root/.cache/go-build",
+              "${{steps.cache-dirs.outputs.gomodcache}}": "/go/pkg/mod"
             }
           # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
           skip-extraction: true
