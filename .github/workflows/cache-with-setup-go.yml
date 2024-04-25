@@ -16,12 +16,21 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 1.21.6
+          cache-dependency-path: "**/go.sum"
       
       - name: Get Cache Directories
         id: cache-dirs
         run: |
           echo "gomodcache=$(go env GOMODCACHE)" >> "$GITHUB_OUTPUT"
           echo "gocache=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
+
+      - name: Debug
+        env:
+          GOMODCACHE: ${{ steps.cache-dirs.outputs.gomodcache }}
+          GOCACHE: ${{ steps.cache-dirs.outputs.gocache }}
+        run: |
+          echo "GOMODCACHE=$GOMODCACHE"
+          echo "GOCACHE=$GOCACHE"
 
       - name: Update Cache
         run: |
@@ -33,7 +42,7 @@ jobs:
           cache-map: |
             {
               "${{steps.cache-dirs.gocache}}": "/root/.cache/go-build",
-              "${{steps.cache-dirs.gocache}}": "/go/pkg/mod"
+              "${{steps.cache-dirs.gomodcache}}": "/go/pkg/mod"
             }
           # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
           skip-extraction: true
