@@ -1,4 +1,4 @@
-name: Mount cache
+name: Setup go cache
 
 on:
   pull_request:
