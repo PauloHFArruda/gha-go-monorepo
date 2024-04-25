@@ -27,7 +27,7 @@ jobs:
           cache-map: |
             {
               "go-build-cache": "/root/.cache/go-build"
-              "go-mod-cache": "/root/.cache/go-mod"
+              "go-mod-cache": "/go/pkg/mod"
             }
           # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
