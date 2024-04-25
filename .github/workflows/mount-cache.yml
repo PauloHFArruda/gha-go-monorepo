@@ -14,7 +14,7 @@ jobs:
 
       - name: Go Build Cache for Docker
         id: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: go-build-cache
           key: go-docker-build-cache-${{ hashFiles('**/*.sum') }}
