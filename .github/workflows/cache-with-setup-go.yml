@@ -45,7 +45,7 @@ jobs:
               "${{steps.cache-dirs.outputs.gomodcache}}": "/go/pkg/mod"
             }
           # skip-extraction: ${{ steps.cache.outputs.cache-hit }}
-          skip-extraction: false
+          skip-extraction: true
 
       - name: build
         run: docker buildx build . -f ms/hello/Dockerfile.cache -t gha-go-monorepo-hello --load
